@@ -79,19 +79,37 @@ nvcc -O3 -arch=sm_75 dunn_skeva.cu -o dunn_skeva -lm
 
 ## 3. Gerar datasets sintéticos com `Synthetic_Data_Generator.py`
 
-O script gera **3 datasets fixos** com clusters circulares em **4 dimensões**, salvos automaticamente em `../datasets/`:
+O script gera um dataset com clusters circulares em **4 dimensões**. Ele não aceita argumentos de linha de comando — edite as variáveis no topo do arquivo antes de executar:
 
-| Arquivo | N | K | Raio |
-|---|---|---|---|
-| `PerfectDataset_F4_150000_K3.txt` | 150 000 | 3 | 2 |
-| `PerfectDataset_F4_150000_K5.txt` | 150 000 | 5 | 2 |
-| `PerfectDataset_F4_140000_K7.txt` | 140 000 | 7 | 2 |
+```python
+# Raio de cada cluster
+cluster_r = [9, 9, 9, 9]
+
+# Centros dos clusters por dimensão (um valor por cluster)
+cluster_dim1 = [40, 40, 60, 60]
+cluster_dim2 = [40, 60, 40, 60]
+cluster_dim3 = [60, 60, 40, 40]
+cluster_dim4 = [60, 40, 60, 40]
+
+# Número de pontos por cluster (len define K)
+nb_points = [12500000, 12500000, 12500000, 12500000]
+```
+
+Para alterar o dataset, ajuste essas variáveis diretamente:
+- **K**: adicione/remova entradas em `cluster_r`, `cluster_dim*` e `nb_points` (todos devem ter o mesmo comprimento)
+- **N**: altere os valores em `nb_points`
+- **Separação entre clusters**: ajuste as coordenadas em `cluster_dim*`
+- **Compacidade dos clusters**: ajuste `cluster_r`
 
 ```bash
 python3 Synthetic_Data_Generator.py
 ```
 
-Cada arquivo de saída contém `N` linhas com 4 valores separados por tabulação (formato float32), compatível com o K-means e o `dunn_skeva`.
+A saída é gerada no diretório de trabalho atual:
+- `SyntheticDataset.txt` — coordenadas (4 colunas separadas por tab, formato float32)
+- `Labels.txt` — rótulo de cluster de cada ponto (um por linha)
+
+O arquivo `SyntheticDataset.txt` é compatível com o K-means e o `dunn_skeva`. O `Labels.txt` pode ser usado diretamente com o `dunn_skeva` no modo `--labels_file`.
 
 ---
 
@@ -112,11 +130,11 @@ Cada arquivo de saída contém `N` linhas com 4 valores separados por tabulaçã
 
 ```bash
 ./kmeans_dunn_eval.sh \
-    --file ../datasets/PerfectDataset_F4_150000_K5.txt \
-    --npoints 150000 \
+    --file SyntheticDataset.txt \
+    --npoints 50000000 \
     --ndims 4 \
     --kmin 2 \
-    --kmax 10 \
+    --kmax 8 \
     --kmeans_target GPU \
     --reps 8 \
     --sample_pct 30 \
@@ -155,14 +173,14 @@ Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destac
 
 **Modo padrão** (dataset + K explícito):
 ```bash
-./dunn_skeva --file ../datasets/PerfectDataset_F4_150000_K5.txt \
-    --nf 4 --k 5 \
+./dunn_skeva --file SyntheticDataset.txt \
+    --nf 4 --k 4 \
     --reps 8 --sample_pct 30 --validate_size 0
 ```
 
 **Modo K-means** (dataset + arquivo de rótulos gerado pelo K-means):
 ```bash
-./dunn_skeva --data_file ../datasets/PerfectDataset_F4_150000_K5.txt \
+./dunn_skeva --data_file SyntheticDataset.txt \
     --labels_file Labels.txt --nf 4 \
     --reps 8 --sample_pct 30 --validate_size 0 \
     --inter_mode centroids
