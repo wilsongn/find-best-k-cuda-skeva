@@ -59,7 +59,7 @@ O script depende do K-means de He, G., Vialle, S., & Baboulin, M. (2021) — *Pa
 git clone https://gitlab-research.centralesupelec.fr/Stephane.Vialle/cpu-gpu-kmeans k-means
 ```
 
-Após o clone, a pasta `k-means/` deve conter os arquivos `main.h`, `Makefile`, os fontes `.cc` e `.cu` do K-means.
+Após o clone, a pasta `k-means/` deve conter os arquivos todos os arquivos do repositório acima.
 
 > **Importante:** O script `kmeans_dunn_eval.sh` espera os fontes exatamente em `k-means/`
 > (relativo ao diretório do script). Não renomeie a pasta.
