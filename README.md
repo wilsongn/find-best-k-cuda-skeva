@@ -42,8 +42,10 @@ Para cada K em um intervalo `[Kmin, Kmax]`, a pipeline:
 find-best-k-cuda-skeva/
 ├── dunn_skeva.cu              # Implementação CUDA do Índice de Dunn com SkeVa
 ├── kmeans_dunn_eval.sh        # Script principal da pipeline
-├── Synthetic_Data_Generator.py# Gerador de datasets sintéticos
 ├── k-means/                   # Fontes do K-means (ver seção abaixo)
+│   ├── Synthetic_Data_Generator.py  # Gerador de datasets sintéticos
+│   ├── main.h, main.cc, gpu.cu, ...
+│   └── Makefile
 └── artigo/
     └── wperformance.pdf       # Artigo completo (versão com autores)
 ```
@@ -102,10 +104,11 @@ Para alterar o dataset, ajuste essas variáveis diretamente:
 - **Compacidade dos clusters**: ajuste `cluster_r`
 
 ```bash
-python3 Synthetic_Data_Generator.py
+# Execute a partir da raiz do repositório
+python3 k-means/Synthetic_Data_Generator.py
 ```
 
-A saída é gerada no diretório de trabalho atual:
+A saída é gerada no diretório de trabalho atual (raiz do repositório):
 - `SyntheticDataset.txt` — coordenadas (4 colunas separadas por tab, formato float32)
 - `Labels.txt` — rótulo de cluster de cada ponto (um por linha)
 
