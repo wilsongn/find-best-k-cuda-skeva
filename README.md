@@ -43,7 +43,6 @@ find-best-k-cuda-skeva/
 ├── dunn_skeva.cu              # Implementação CUDA do Índice de Dunn com SkeVa
 ├── kmeans_dunn_eval.sh        # Script principal da pipeline
 ├── k-means/                   # Fontes do K-means (ver seção abaixo)
-│   ├── Synthetic_Data_Generator.py  # Gerador de datasets sintéticos
 │   ├── main.h, main.cc, gpu.cu, ...
 │   └── Makefile
 └── artigo/
@@ -81,7 +80,7 @@ nvcc -O3 -arch=sm_75 dunn_skeva.cu -o dunn_skeva -lm
 
 ## 3. Gerar datasets sintéticos com `Synthetic_Data_Generator.py`
 
-O script gera um dataset com clusters circulares em **4 dimensões**. Ele não aceita argumentos de linha de comando — edite as variáveis no topo do arquivo antes de executar:
+O script `k-means/Synthetic_Data_Generator.py` é fornecido pelo repositório do K-means (He et al., 2021) e gera um dataset com clusters circulares em **4 dimensões**. Ele não aceita argumentos de linha de comando — edite as variáveis no topo do arquivo antes de executar:
 
 ```python
 # Raio de cada cluster
