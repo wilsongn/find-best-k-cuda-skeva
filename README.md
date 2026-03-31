@@ -79,18 +79,19 @@ nvcc -O3 -arch=sm_75 dunn_skeva.cu -o dunn_skeva -lm
 
 ## 3. Gerar datasets sintéticos com `Synthetic_Data_Generator.py`
 
-O script Python gera datasets com clusters gaussianos para testes. Exemplo de uso:
+O script gera **3 datasets fixos** com clusters circulares em **4 dimensões**, salvos automaticamente em `../datasets/`:
+
+| Arquivo | N | K | Raio |
+|---|---|---|---|
+| `PerfectDataset_F4_150000_K3.txt` | 150 000 | 3 | 2 |
+| `PerfectDataset_F4_150000_K5.txt` | 150 000 | 5 | 2 |
+| `PerfectDataset_F4_140000_K7.txt` | 140 000 | 7 | 2 |
 
 ```bash
-# Gera um dataset com 50000 pontos, 8 dimensões e 5 clusters reais
-python3 Synthetic_Data_Generator.py \
-    --npoints 50000 \
-    --ndims 8 \
-    --nclusters 5 \
-    --output dataset_50k_8d_5k.txt
+python3 Synthetic_Data_Generator.py
 ```
 
-O arquivo de saída é um texto com `N` linhas, cada linha contendo `NF` valores separados por espaço (formato esperado pelo K-means e pelo `dunn_skeva`).
+Cada arquivo de saída contém `N` linhas com 4 valores separados por tabulação (formato float32), compatível com o K-means e o `dunn_skeva`.
 
 ---
 
@@ -111,16 +112,15 @@ O arquivo de saída é um texto com `N` linhas, cada linha contendo `NF` valores
 
 ```bash
 ./kmeans_dunn_eval.sh \
-    --file dataset_50k_8d_5k.txt \
-    --npoints 50000 \
-    --ndims 8 \
+    --file ../datasets/PerfectDataset_F4_150000_K5.txt \
+    --npoints 150000 \
+    --ndims 4 \
     --kmin 2 \
     --kmax 10 \
     --kmeans_target GPU \
-    --sketch_size 512 \
-    --validate_size 512 \
     --reps 8 \
-    --inter_mode centroids
+    --sample_pct 30 \
+    --validate_size 0
 ```
 
 Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destaca o melhor K. O arquivo de rótulos do melhor K é salvo como `Labels_best_k<K>.txt`.
@@ -140,7 +140,6 @@ Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destac
 | `--kmeans_iters I` | 200 | Máximo de iterações do K-means |
 | `--kmeans_tol TOL` | 1e-4 | Tolerância de convergência |
 | `--sketch_size S` | 512 | Tamanho fixo do sketch SkeVa |
-| `--validate_size V` | 512 | Tamanho do validate SkeVa |
 | `--reps R` | 8 | Repetições SkeVa |
 | `--dunn_threads T` | 256 | Threads por bloco CUDA |
 | `--seed N` | 42 | Semente do gerador aleatório |
@@ -156,14 +155,16 @@ Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destac
 
 **Modo padrão** (dataset + K explícito):
 ```bash
-./dunn_skeva --file dataset.txt --nf 8 --k 5 \
-    --sketch_size 512 --validate_size 512 --reps 8
+./dunn_skeva --file ../datasets/PerfectDataset_F4_150000_K5.txt \
+    --nf 4 --k 5 \
+    --reps 8 --sample_pct 30 --validate_size 0
 ```
 
 **Modo K-means** (dataset + arquivo de rótulos gerado pelo K-means):
 ```bash
-./dunn_skeva --data_file dataset.txt --labels_file Labels.txt --nf 8 \
-    --sketch_size 512 --validate_size 512 --reps 8 \
+./dunn_skeva --data_file ../datasets/PerfectDataset_F4_150000_K5.txt \
+    --labels_file Labels.txt --nf 4 \
+    --reps 8 --sample_pct 30 --validate_size 0 \
     --inter_mode centroids
 ```
 
