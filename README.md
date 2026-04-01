@@ -10,7 +10,7 @@
 >
 > Por equívoco, enviamos o artigo no formato *blind* (sem identificação dos autores).
 > A versão completa e correta do artigo — com autores, filiação e demais informações —
-> está disponível na pasta [`artigo/wperformance.pdf`](wperformance.pdf)
+> está disponível na pasta [`wperformance.pdf`](wperformance.pdf)
 > deste repositório.
 
 ---
