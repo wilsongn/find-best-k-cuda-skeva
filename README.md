@@ -2,18 +2,7 @@
 
 > **K-means com Seleção Automática de K via Dunn-SkeVa em GPU**
 > Wilson G. N. Junior, Wellington S. Martins — Instituto de Informática, UFG
-
----
-
-> [!IMPORTANT]
-> **Nota ao avaliador do artigo**
->
-> Por equívoco, enviamos o artigo no formato *blind* (sem identificação dos autores).
-> A versão completa e correta do artigo — com autores, filiação e demais informações —
-> está disponível na pasta [`wperformance.pdf`](wperformance.pdf)
-> deste repositório.
-
----
+> André C. P. L. F. de Carvalho - Instituto de Ciências Matemáticas e de Computação (ICMC), USP
 
 ## Visão Geral
 
