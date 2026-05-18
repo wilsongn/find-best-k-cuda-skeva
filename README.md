@@ -1,7 +1,9 @@
 # find-best-k-cuda-skeva
 
 > **K-means com Seleção Automática de K via Dunn-SkeVa em GPU**
+
 > Wilson G. N. Junior, Wellington S. Martins — Instituto de Informática, UFG
+
 > André C. P. L. F. de Carvalho - Instituto de Ciências Matemáticas e de Computação (ICMC), USP
 
 ## Visão Geral
