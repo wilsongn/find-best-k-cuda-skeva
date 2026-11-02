@@ -1,0 +1,10 @@
+f9cf1a14502a52f73f54694852f24ee1  d1_4cl_original/SyntheticDataset.txt
+d62ab3c29f8dc9e5fbd476ab229c345a  d2_6cl_separados/SyntheticDataset.txt
+fbcdf29ad027a10a726e80a4e84bf5f0  d3_8cl_compactos/SyntheticDataset.txt
+d6f647e10d20e9ae3d92de3888059d6a  d4_3cl_desiguais/SyntheticDataset.txt
+c12b6d3f70f019713b460deea3c033de  d5_5cl_sobrepostos/SyntheticDataset.txt
+d6f9f8db55d176edef5c0ce057562728  d1_4cl_original/Labels.txt
+428818c104585c597027130ebf50f370  d2_6cl_separados/Labels.txt
+1ff14b5821f3148c1e7bc8d97d4d653a  d3_8cl_compactos/Labels.txt
+4892c7dec0d894e473fe514187033ff3  d4_3cl_desiguais/Labels.txt
+22bb8c3f7cee24fa8a68ad7af52fce0c  d5_5cl_sobrepostos/Labels.txt

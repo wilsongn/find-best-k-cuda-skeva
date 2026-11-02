@@ -1,0 +1,343 @@
+========================================================
+ kmeans_dunn_eval  —  K de 2 a 10
+ Dataset : /home/wilsongn/findbestkrepositorio/find-best-k-cuda-skeva/datasets/d2_6cl_separados/SyntheticDataset.txt
+ N=1200000  NF=4  alvo_kmeans=GPU
+ Descarte por cota superior: desabilitado
+========================================================
+ GPU arch detectada: sm_86
+
+-------- K = 2 ----------------------------------------
+[kmeans] Compilando para K=2...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       2
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   3.870298 ms
+    Time of transposing centroid matrix:      0.316256 ms
+    Nb of iterations:                         3
+    Time of ComputeAssign per iteration:      0.232043 ms
+    Time of UpdateCentroids per iteration:    1.031189 ms
+    Time of one iteration:                    1.263232 ms
+    Time of computation on GPU:               0.004897 s
+    Time of transfers and computation on GPU: 0.008768 s
+[dunn] Calculando Dunn Index para K=2...
+[resultado] K=2  Dunn Index = 0.532845914  (cota sup. = 0.999974966)  Tempo DI = 11.802513s
+
+-------- K = 3 ----------------------------------------
+[kmeans] Compilando para K=3...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       3
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   3.903553 ms
+    Time of transposing centroid matrix:      0.320512 ms
+    Nb of iterations:                         4
+    Time of ComputeAssign per iteration:      0.231736 ms
+    Time of UpdateCentroids per iteration:    1.110912 ms
+    Time of one iteration:                    1.342648 ms
+    Time of computation on GPU:               0.007532 s
+    Time of transfers and computation on GPU: 0.011436 s
+[dunn] Calculando Dunn Index para K=3...
+[resultado] K=3  Dunn Index = 0.502385259  (cota sup. = 1.002169132)  Tempo DI = 9.218734s
+
+-------- K = 4 ----------------------------------------
+[kmeans] Compilando para K=4...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       4
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   3.887003 ms
+    Time of transposing centroid matrix:      0.300032 ms
+    Nb of iterations:                         4
+    Time of ComputeAssign per iteration:      0.232768 ms
+    Time of UpdateCentroids per iteration:    1.038512 ms
+    Time of one iteration:                    1.271280 ms
+    Time of computation on GPU:               0.007310 s
+    Time of transfers and computation on GPU: 0.011197 s
+[dunn] Calculando Dunn Index para K=4...
+[resultado] K=4  Dunn Index = 0.740017712  (cota sup. = 1.477503181)  Tempo DI = 6.615730s
+
+-------- K = 5 ----------------------------------------
+[kmeans] Compilando para K=5...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       5
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   3.890042 ms
+    Time of transposing centroid matrix:      0.294912 ms
+    Nb of iterations:                         3
+    Time of ComputeAssign per iteration:      0.243819 ms
+    Time of UpdateCentroids per iteration:    1.062549 ms
+    Time of one iteration:                    1.306368 ms
+    Time of computation on GPU:               0.006882 s
+    Time of transfers and computation on GPU: 0.010772 s
+[dunn] Calculando Dunn Index para K=5...
+[resultado] K=5  Dunn Index = 0.466693729  (cota sup. = 0.932023227)  Tempo DI = 5.307659s
+
+-------- K = 6 ----------------------------------------
+[kmeans] Compilando para K=6...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       6
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   3.916702 ms
+    Time of transposing centroid matrix:      0.297984 ms
+    Nb of iterations:                         24
+    Time of ComputeAssign per iteration:      0.214317 ms
+    Time of UpdateCentroids per iteration:    1.006944 ms
+    Time of one iteration:                    1.221261 ms
+    Time of computation on GPU:               0.034004 s
+    Time of transfers and computation on GPU: 0.037921 s
+[dunn] Calculando Dunn Index para K=6...
+[resultado] K=6  Dunn Index = 0.066694453  (cota sup. = 0.133167252)  Tempo DI = 4.982774s
+
+-------- K = 7 ----------------------------------------
+[kmeans] Compilando para K=7...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       7
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   4.204227 ms
+    Time of transposing centroid matrix:      0.293152 ms
+    Nb of iterations:                         163
+    Time of ComputeAssign per iteration:      0.237152 ms
+    Time of UpdateCentroids per iteration:    1.046073 ms
+    Time of one iteration:                    1.283225 ms
+    Time of computation on GPU:               0.261657 s
+    Time of transfers and computation on GPU: 0.265861 s
+[dunn] Calculando Dunn Index para K=7...
+[resultado] K=7  Dunn Index = 0.301563352  (cota sup. = 0.578080893)  Tempo DI = 3.665367s
+
+-------- K = 8 ----------------------------------------
+[kmeans] Compilando para K=8...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       8
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   4.207943 ms
+    Time of transposing centroid matrix:      0.307200 ms
+    Nb of iterations:                         91
+    Time of ComputeAssign per iteration:      0.224133 ms
+    Time of UpdateCentroids per iteration:    1.028717 ms
+    Time of one iteration:                    1.252850 ms
+    Time of computation on GPU:               0.134933 s
+    Time of transfers and computation on GPU: 0.139141 s
+[dunn] Calculando Dunn Index para K=8...
+[resultado] K=8  Dunn Index = 0.063436270  (cota sup. = 0.126603425)  Tempo DI = 4.538404s
+
+-------- K = 9 ----------------------------------------
+[kmeans] Compilando para K=9...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       9
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   4.216376 ms
+    Time of transposing centroid matrix:      0.292864 ms
+    Nb of iterations:                         116
+    Time of ComputeAssign per iteration:      0.226655 ms
+    Time of UpdateCentroids per iteration:    1.017935 ms
+    Time of one iteration:                    1.244590 ms
+    Time of computation on GPU:               0.168606 s
+    Time of transfers and computation on GPU: 0.172822 s
+[dunn] Calculando Dunn Index para K=9...
+[resultado] K=9  Dunn Index = 0.062739775  (cota sup. = 0.125313401)  Tempo DI = 4.318343s
+
+-------- K = 10 ----------------------------------------
+[kmeans] Compilando para K=10...
+[kmeans] Executando...
+K-means clustering on GPU in single precision:
+- Dataset:
+    Nb of data instances: 1200000
+    Nb of dimensions:     4
+    Nb of clusters:       10
+    Nb of packages:       100
+- Stopping criterion:
+    Tolerance:       0.000100
+    Max nb of iters: 200
+- Block size & Nb of streams:
+    BSXN: 128
+    BSXP: 32
+    BSXK: 32
+    BSYD: 4
+    Nb of streams for Update_step1: 16
+    Nb of streams for Update_step2: 32
+- Loading data from text file into CPU RAM...
+    The input data have been successfully loaded!
+    The initial centroids have been successfully loaded!
+- Parallel computation starts...
+- Results & Performance:
+    Time of data transfers:                   4.251288 ms
+    Time of transposing centroid matrix:      0.300768 ms
+    Nb of iterations:                         200
+    Time of ComputeAssign per iteration:      0.238117 ms
+    Time of UpdateCentroids per iteration:    1.017504 ms
+    Time of one iteration:                    1.255621 ms
+    Time of computation on GPU:               0.306567 s
+    Time of transfers and computation on GPU: 0.310818 s
+[dunn] Calculando Dunn Index para K=10...
+[resultado] K=10  Dunn Index = 0.301848859  (cota sup. = 0.573752701)  Tempo DI = 2.909200s
+
+========================================================
+ RESULTADOS FINAIS
+========================================================
+K       Dunn Index (SkeVa)    Cota superior     Tempo cota (s)  Tempo DI (s)
+------  --------------------  ----------------  --------------  ------------
+2       0.532845914           0.999974966       -               11.802513
+3       0.502385259           1.002169132       -               9.218734
+4       0.740017712           1.477503181       -               6.615730
+5       0.466693729           0.932023227       -               5.307659
+6       0.066694453           0.133167252       -               4.982774
+7       0.301563352           0.578080893       -               3.665367
+8       0.063436270           0.126603425       -               4.538404
+9       0.062739775           0.125313401       -               4.318343
+10      0.301848859           0.573752701       -               2.909200
+--------------------------------------------------------
+ Tempo total dunn_skeva (com leitura): 60.612s
+ Melhor K = 4  (Dunn Index = 0.740017712)
+ Labels salvo em: Labels_best_k4.txt
+========================================================
+WALL 88.05

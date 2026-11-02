@@ -65,6 +65,9 @@ nvidia-smi --query-gpu=compute_cap --format=csv,noheader
 
 # Compile (substitua sm_75 pela sua GPU)
 nvcc -O3 -arch=sm_75 dunn_skeva.cu -o dunn_skeva -lm
+
+# Opcional: inicialização k-means++ (--init kmeanspp)
+gcc -O3 -fopenmp kmeanspp_init.c -o kmeanspp_init -lm
 ```
 
 ---
@@ -150,6 +153,9 @@ Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destac
 | `--kmeans_threads T` | 1 | Threads OpenMP (somente modo CPU) |
 | `--kmeans_iters I` | 200 | Máximo de iterações do K-means |
 | `--kmeans_tol TOL` | 1e-4 | Tolerância de convergência |
+| `--init random\|kmeanspp` | random | Inicialização dos centróides: sorteio uniforme do K-means ou k-means++ |
+| `--init_seed N` | 1 | Semente do k-means++ |
+| `--init_centroids_dir DIR` | — | Usa `DIR/init_k<K>.txt` como centróides iniciais (incompatível com `--init kmeanspp`) |
 | `--sketch_size S` | 512 | Tamanho fixo do sketch SkeVa |
 | `--reps R` | 8 | Repetições SkeVa |
 | `--dunn_threads T` | 256 | Threads por bloco CUDA |
@@ -157,8 +163,10 @@ Ao final, o script imprime uma tabela com o Índice de Dunn para cada K e destac
 | `--inter_mode centroids\|points` | centroids | Modo de separação inter-cluster |
 | `--sample_pct P` | 0 | sketch\_size = P% do cluster (0 = fixo) |
 | `--no-streams` | — | Desabilitar CUDA streams |
+| `--prune` | — | Descarta K cuja cota superior `sep_min / raio_max` não supera o melhor Dunn já obtido (sem rodar o SkeVa) |
 | `--kmeans_dir DIR` | `./k-means` | Diretório dos fontes do K-means |
 | `--dunn_bin BIN` | `./dunn_skeva` | Caminho do binário dunn\_skeva |
+| `--kmeanspp_bin BIN` | `./kmeanspp_init` | Caminho do binário kmeanspp\_init |
 
 ---
 

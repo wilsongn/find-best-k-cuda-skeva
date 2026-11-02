@@ -1,3 +1,15 @@
 .vscode/launch.json
 .vscode/c_cpp_properties.json
 .vscode/settings.json
+
+# Binários
+dunn_skeva
+kmeanspp_init
+Labels_best_k*.txt
+
+# K-means (clonado separadamente, ver README)
+k-means/
+
+# Datasets gerados (regeneráveis com experimentos/gerar_datasets.py)
+datasets/*/SyntheticDataset.txt
+datasets/*/Labels.txt

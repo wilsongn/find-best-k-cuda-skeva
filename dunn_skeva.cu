@@ -47,6 +47,8 @@ typedef struct {
   int use_streams;    // flag para habilitar/desabilitar streams
   int inter_mode;     // INTER_MODE_CENTROIDS ou INTER_MODE_POINTS
   float sample_pct;   // % do cluster usado como pool SkeVa (0 = usar tudo)
+  float prune_threshold; // descarta K se cota superior do Dunn <= limiar (<0 = desabilitado)
+  int bound_only;        // calcula apenas a cota superior (sem SkeVa)
 } Args;
 
 // --------- PRNG simples (xorshift64*) ----------
@@ -72,6 +74,8 @@ static void parse_args(int argc, char** argv, Args* a){
   a->use_streams = 1;
   a->inter_mode = INTER_MODE_CENTROIDS;  // padrão: centróides
   a->sample_pct = 0.f;                   // padrão: usar tudo
+  a->prune_threshold = -1.f;             // padrão: sem descarte
+  a->bound_only = 0;
   for (int i=1;i<argc;i++){
     if (!strcmp(argv[i],"--file") && i+1<argc) a->file = argv[++i];
     else if (!strcmp(argv[i],"--data_file") && i+1<argc) a->data_file = argv[++i];
@@ -91,6 +95,8 @@ static void parse_args(int argc, char** argv, Args* a){
         exit(EXIT_FAILURE);
       }
     }
+    else if (!strcmp(argv[i],"--prune_threshold") && i+1<argc) a->prune_threshold = (float)atof(argv[++i]);
+    else if (!strcmp(argv[i],"--bound_only")) a->bound_only = 1;
     else if (!strcmp(argv[i],"--inter_mode") && i+1<argc){
       ++i;
       if (!strcmp(argv[i],"centroids"))     a->inter_mode = INTER_MODE_CENTROIDS;
@@ -116,7 +122,10 @@ static void parse_args(int argc, char** argv, Args* a){
       "  --no-streams            desabilitar CUDA streams\n"
       "  --inter_mode centroids  separação = dist. mínima entre centróides (padrão)\n"
       "  --inter_mode points     separação = dist. mínima ponto-a-ponto (exato, O(N²))\n"
-      "  --sample_pct P          sketch_size = P%% do cluster (0 = usar --sketch_size fixo)\n",
+      "  --sample_pct P          sketch_size = P%% do cluster (0 = usar --sketch_size fixo)\n"
+      "  --prune_threshold D     descarta o K (sem SkeVa) se a cota superior\n"
+      "                          sep_min / raio_max for <= D (melhor Dunn já obtido)\n"
+      "  --bound_only            calcula apenas a cota superior sep_min / raio_max\n",
       argv[0], argv[0]);
     exit(EXIT_FAILURE);
   }
@@ -303,6 +312,27 @@ static float min_centroid_separation(const float* C, int K, int NF){
     }
   }
   return best;
+}
+
+// --------- raio² por cluster (CPU, O(N·NF)) ----------
+// raio = max ||x - c|| para x no cluster. Como o centróide é combinação convexa
+// dos pontos, ||x - c|| <= max_j ||x - x_j|| <= diâmetro, logo raio <= diâmetro.
+static void compute_radii_sq_cpu(const float* X, int NF, int K, int** idx, int* sizes,
+                                 const float* C, float* rad_out){
+  for (int c=0;c<K;c++){
+    float best = 0.f;
+    const float* cc = &C[(size_t)c*NF];
+    for (int t=0;t<sizes[c];t++){
+      const float* xi = &X[(size_t)idx[c][t]*NF];
+      float s=0.f;
+      for (int f=0;f<NF;f++){
+        float d = xi[f]-cc[f];
+        s += d*d;
+      }
+      if (s>best) best=s;
+    }
+    rad_out[c]=best;
+  }
 }
 
 // --------- comparador para qsort ----------
@@ -1049,6 +1079,56 @@ int main(int argc, char** argv){
   fprintf(stderr, "[time] inter-cluster separation : %.6f s\n", t_sep1 - t_sep0);
   #endif
 
+  // 4b) Cota superior do Dunn via raio (tempo linear)
+  //     Dunn = sep / diam_max <= sep / raio_max, pois diam_max >= raio_max.
+  #if ENABLE_TIMING
+  double t_rad0 = wall_time_s();
+  #endif
+
+  float* rad2 = (float*)calloc(K, sizeof(float));
+  if (!rad2){ fprintf(stderr,"OOM\n"); exit(EXIT_FAILURE); }
+  compute_radii_sq_cpu(X, NF, K, idx, sizes, C, rad2);
+
+  float maxrad = 0.f;
+  for (int c = 0; c < K; c++){
+    if (rad2[c] > maxrad) maxrad = rad2[c];
+  }
+  float dunn_ub = (maxrad > 0.f) ? sqrtf(minsep / maxrad) : FLT_MAX;
+
+  #if ENABLE_TIMING
+  double t_rad1 = wall_time_s();
+  fprintf(stderr, "[time] radii (CPU)              : %.6f s\n", t_rad1 - t_rad0);
+  #endif
+
+  fprintf(stderr, "Max radius                      : %.6f\n", sqrtf(maxrad));
+  fprintf(stderr, "Dunn upper bound (sep/raio)     : %.6f\n", dunn_ub);
+
+  int pruned = (A.prune_threshold >= 0.f && dunn_ub <= A.prune_threshold);
+  if (A.bound_only || pruned){
+    if (pruned)
+      fprintf(stderr, "K=%d descartado: cota superior %.6f <= limiar %.6f (SkeVa não executado)\n",
+              K, dunn_ub, A.prune_threshold);
+
+    printf("\n========== RESULTADOS ==========\n");
+    printf("Max radius              : %.9f\n", sqrtf(maxrad));
+    printf("Dunn upper bound        : %.9f\n", dunn_ub);
+    if (pruned) printf("Dunn Index (SkeVa)      : PRUNED\n");
+
+    #if ENABLE_TIMING
+    double t_total1 = wall_time_s();
+    fprintf(stderr, "\n[time] TOTAL (pós-leitura)      : %.6f s\n", t_total1 - t_total0);
+    #endif
+
+    free(rad2);
+    free(C);
+    for (int c = 0; c < K; c++) free(idx[c]);
+    free(idx);
+    free(sizes);
+    free(X);
+    free(y);
+    return 0;
+  }
+
   // 5) Inicializa streams
   StreamContext stream_contexts[NUM_STREAMS];
   if (A.use_streams){
@@ -1111,6 +1191,10 @@ int main(int argc, char** argv){
           &rng);
     }
 
+    // O raio é cota inferior exata do diâmetro; a amostragem pode subestimá-lo.
+    // Usar o máximo mantém o Dunn calculado <= cota superior (descarte consistente).
+    if (rad2[c] > diam_est[c]) diam_est[c] = rad2[c];
+
     fprintf(stderr, "Cluster %d: SkeVa diameter (sq) ≈ %.6f\n", c, diam_est[c]);
 
     #if ENABLE_TIMING
@@ -1145,6 +1229,8 @@ int main(int argc, char** argv){
   } else {
     printf("Min point separation    : %.9f\n", sqrtf(minsep));
   }
+  printf("Max radius              : %.9f\n", sqrtf(maxrad));
+  printf("Dunn upper bound        : %.9f\n", dunn_ub);
   printf("Max (SkeVa) diameter    : %.9f\n", sqrtf(maxdiam));
   printf("Dunn Index (SkeVa)      : %.9f\n", dunn);
 
@@ -1154,6 +1240,7 @@ int main(int argc, char** argv){
   #endif
 
   // Cleanup
+  free(rad2);
   free(diam_est);
   free(C);
   for (int c = 0; c < K; c++) free(idx[c]);
